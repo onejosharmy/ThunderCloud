@@ -44,7 +44,8 @@ public class JSONParser {
                 String name = periods.getJSONObject(i).getString("name");
                 String shortForecast = periods.getJSONObject(i).getString("shortForecast");
                 String temperature = periods.getJSONObject(i).getString("temperature");
-                String forecast = name + "\n\t\t" + temperature + "\t\t" + shortForecast;
+                String image = periods.getJSONObject(i).getString("icon");
+                String forecast = name + "\n\t\t" + temperature + "\t\t" + shortForecast + "\t\t" + image;
                 list.add(forecast);
             } catch (JSONException e) {
                 return list;

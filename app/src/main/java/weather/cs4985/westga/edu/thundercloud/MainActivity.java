@@ -42,12 +42,16 @@ public class MainActivity extends AppCompatActivity {
         }
         String forecastURL = "https://api.weather.gov/points/" + lat + "," + lon + "/forecast";
         textview = (TextView) findViewById(R.id.textview);
+        try {
+            fetcher = new ThreadFetcher(forecastURL);
+            fetcher.start();
+            textview.setText("Retrieving Forcast");
+            handler = new Handler();
+            handler.post(checkFetcher);
+        } catch (Exception e){
+            textview.setText("Forcast retrieval failed");
+        }
 
-        fetcher = new ThreadFetcher(forecastURL);
-        fetcher.start();
-        textview.setText("Retrieving Forcast");
-        handler = new Handler();
-        handler.post(checkFetcher);
     }
 
     Runnable checkFetcher = new Runnable() {
