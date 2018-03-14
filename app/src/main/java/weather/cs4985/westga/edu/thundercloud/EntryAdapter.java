@@ -3,6 +3,9 @@ package weather.cs4985.westga.edu.thundercloud;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +15,9 @@ import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -39,13 +45,32 @@ public class EntryAdapter extends ArrayAdapter<Entry> {
         Entry entry = this.list.get(position);
 
         TextView text = entryView.findViewById(R.id.textviewname);
-        text.setText(entry.getShortForecast());
+        text.setText(entry.getName() + "         " + entry.getTemperature() + "\u00b0" + "F");
+        TextView shortforecast = entryView.findViewById(R.id.textviewsize);
+        shortforecast.setText(entry.getShortForecast());
 
         ImageView img = entryView.findViewById(R.id.button);
+        try {
+            //int resource = Integer.parseInt(entry.getImageResource());
+            img.setImageDrawable(this.loadImageFromURL(entry.getImageResource()));
 
-        img.setImageResource(R.drawable.few_clouds_icon);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
 
         return entryView;
+    }
+
+    public Drawable loadImageFromURL(String url){
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().build();
+        StrictMode.setThreadPolicy(policy);
+        try{
+            InputStream stream = (InputStream) new URL(url).getContent();
+            Drawable drawable = Drawable.createFromStream(stream,"icon");
+            return drawable;
+        }catch(Exception e){
+            return null;
+        }
     }
     /**
     private int determineIcon(Entry entry) {

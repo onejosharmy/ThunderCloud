@@ -1,6 +1,7 @@
 package weather.cs4985.westga.edu.thundercloud;
 
 import android.Manifest;
+import android.app.ListActivity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -10,11 +11,13 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Adapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ListActivity {
 
     final int TIMEOUT = 240;
     double lat = 33.575;
@@ -22,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     Handler handler;
     ThreadFetcher fetcher;
     TextView textview;
+    ListView listview;
+    EntryAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         }
         String forecastURL = "https://api.weather.gov/points/" + lat + "," + lon + "/forecast";
         textview = (TextView) findViewById(R.id.textview);
+        listview = (ListView) findViewById(android.R.id.list);
         try {
             fetcher = new ThreadFetcher(forecastURL);
             fetcher.start();
@@ -60,8 +66,9 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             if (fetcher.isFinished()) {
                 if (fetcher.successful()) {
+                    textview.setText("");
                     JSONParser parser = new JSONParser(fetcher.getResult());
-                    display(parser.forecastList());
+                    displayEntries(parser.forecastEntryList());
                 } else {
                     textview.setText(("Can't download forecast"));
                 }
@@ -90,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void display(List<String> forecasts) {
+    private void displayStrings(List<String> forecasts) {
         StringBuilder sb = new StringBuilder();
         for (String forecast : forecasts) {
             sb.append(forecast);
@@ -98,5 +105,10 @@ public class MainActivity extends AppCompatActivity {
         }
         //  textview.setText("Hello world");
         textview.setText(sb.toString());
+    }
+
+    private void displayEntries(List<Entry> forecasts){
+        adapter = new EntryAdapter(MainActivity.this, R.layout.entry_view, forecasts);
+        setListAdapter(adapter);
     }
 }

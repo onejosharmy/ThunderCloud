@@ -6,27 +6,26 @@ package weather.cs4985.westga.edu.thundercloud;
  *
  */
 
-public class Entry implements Comparable<Entry> {
+public class Entry {
 
-    private String longForecast;
+    private String name;
     private String shortForecast;
-    private int forecastOrder;
+    private String temperature;
+    private String imageResource;
 
 
-    public Entry(String longForecast, String shortForescast, int forecastOrder) {
-        this.longForecast = longForecast;
+    public Entry(String name, String shortForescast, String temperature, String imageResource) {
+        this.name = name;
         this.shortForecast = shortForescast;
-        this.forecastOrder = forecastOrder;
+        this.temperature = temperature;
+        this.imageResource = imageResource;
     }
 
-    public String getLongForecast(){ return this.longForecast; }
+    public String getName(){ return this.name; }
 
     public String getShortForecast(){ return this.shortForecast; }
 
-    public int getforecastOrder() { return this.forecastOrder; }
+    public String getTemperature() { return this.temperature; }
 
-    @Override
-    public int compareTo(Entry that) {
-        return this.forecastOrder - that.forecastOrder;
-    }
+    public String getImageResource() { return this.imageResource; }
 }
