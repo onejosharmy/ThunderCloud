@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ThunderCloud.iml" filepath="$PROJECT_DIR$/ThunderCloud.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/ThunderCloud.iml" filepath="$PROJECT_DIR$/.idea/ThunderCloud.iml" />
+      <module fileurl="file://C:\Users\Dallas Wyant\Downloads\ThunderCloud\ThunderCloud.iml" filepath="C:\Users\Dallas Wyant\Downloads\ThunderCloud\ThunderCloud.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\Dallas Wyant\Downloads\ThunderCloud\app\app.iml" filepath="C:\Users\Dallas Wyant\Downloads\ThunderCloud\app\app.iml" />
     </modules>
   </component>
 </project>
