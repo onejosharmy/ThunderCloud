@@ -48,15 +48,11 @@ public class MainActivity extends ListActivity {
         String forecastURL = "https://api.weather.gov/points/" + lat + "," + lon + "/forecast";
         textview = (TextView) findViewById(R.id.textview);
         listview = (ListView) findViewById(android.R.id.list);
-        try {
-            fetcher = new ThreadFetcher(forecastURL);
-            fetcher.start();
-            textview.setText(R.string.retrieving);
-            handler = new Handler();
-            handler.post(checkFetcher);
-        } catch (Exception e) {
-            textview.setText(R.string.failed);
-        }
+        fetcher = new ThreadFetcher(forecastURL);
+        fetcher.start();
+        textview.setText(R.string.retrieving);
+        handler = new Handler();
+        handler.post(checkFetcher);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +73,8 @@ public class MainActivity extends ListActivity {
                     JSONParser parser = new JSONParser(fetcher.getResult());
                     displayEntries(parser.forecastEntryList());
                 } else {
-                    textview.setText(("Can't download forecast"));
+                    textview.setText((R.string.failed));
+                    listview.setAdapter(null);
                 }
 
             } else {
@@ -86,6 +83,7 @@ public class MainActivity extends ListActivity {
                     handler.postDelayed(checkFetcher, 1000);
                 } else {
                     textview.setText("No Network connection");
+                    listview.setAdapter(null);
                 }
             }
         }
