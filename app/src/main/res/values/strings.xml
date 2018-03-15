@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Thunder Cloud</string>
+    <string name="retrieving">Retrieving Forecast</string>
+    <string name="failed">Forecast retrieval FAILED</string>
 </resources>

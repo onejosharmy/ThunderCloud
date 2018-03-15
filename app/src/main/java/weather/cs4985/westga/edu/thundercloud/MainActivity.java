@@ -6,12 +6,12 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.widget.Adapter;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -29,7 +29,7 @@ public class MainActivity extends ListActivity {
     EntryAdapter adapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         permissionRequester(Manifest.permission.ACCESS_FINE_LOCATION);
@@ -51,13 +51,20 @@ public class MainActivity extends ListActivity {
         try {
             fetcher = new ThreadFetcher(forecastURL);
             fetcher.start();
-            textview.setText("Retrieving Forcast");
+            textview.setText(R.string.retrieving);
             handler = new Handler();
             handler.post(checkFetcher);
-        } catch (Exception e){
-            textview.setText("Forcast retrieval failed");
+        } catch (Exception e) {
+            textview.setText(R.string.failed);
         }
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onCreate(savedInstanceState);
+            }
+        });
     }
 
     Runnable checkFetcher = new Runnable() {
@@ -84,10 +91,6 @@ public class MainActivity extends ListActivity {
         }
     };
 
-    private String prepareRequest() {
-        return "https://api.weather.gov/points/" + lat + "," + lon + "/forecast";
-    }
-
     private void permissionRequester(String resource) {
 
         int result = ContextCompat.checkSelfPermission(this, resource);
@@ -97,17 +100,7 @@ public class MainActivity extends ListActivity {
 
     }
 
-    private void displayStrings(List<String> forecasts) {
-        StringBuilder sb = new StringBuilder();
-        for (String forecast : forecasts) {
-            sb.append(forecast);
-            sb.append("\n\n\n");
-        }
-        //  textview.setText("Hello world");
-        textview.setText(sb.toString());
-    }
-
-    private void displayEntries(List<Entry> forecasts){
+    private void displayEntries(List<Entry> forecasts) {
         adapter = new EntryAdapter(MainActivity.this, R.layout.entry_view, forecasts);
         setListAdapter(adapter);
     }
